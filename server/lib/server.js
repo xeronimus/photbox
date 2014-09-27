@@ -3,8 +3,7 @@ var express = require('express'),
 bodyParser = require('body-parser');
 var app = express();
 
-
-app.use(express.static(__dirname + '/../client/dist'));
+app.use(express.static(__dirname + '/../../client/dist'));
 app.use('/photos', express.static(__dirname + '/../photos'));
 app.use(bodyParser.json());
 
