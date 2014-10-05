@@ -7,6 +7,7 @@
     min-height: 300px;
     border: 1px solid #ccc;
     position: relative;
+    background: #000 url('../images/people.jpg') no-repeat;
 }
 
 .photo img {
@@ -57,5 +58,5 @@ i.glyphicon.camstatus-DISCONNECTED:before {
 
 .footer {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
 }
