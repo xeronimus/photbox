@@ -1,7 +1,5 @@
-'use strict';
 
-
-angular.module('photbox').controller('MainController', function (Photo, Status, Connect, REST_API_URL) {
+angular.module('photbox').controller('MainController', function (Photo, Status, Connect, REST_API_URL,$log) {
 
   var vm = this;
 
@@ -23,7 +21,7 @@ angular.module('photbox').controller('MainController', function (Photo, Status, 
     Connect.get({}, function (data) {
       vm.camStatus = data;
     }, function (err) {
-      console.log('could not connect camera', err);
+      $log.error('could not connect camera', err);
     });
   }
 
