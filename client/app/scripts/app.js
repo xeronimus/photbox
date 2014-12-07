@@ -2,4 +2,5 @@ angular.module('photbox', [
   'ngResource',
   'ngSanitize'
 ])
-  .constant('REST_API_URL', 'http://192.168.0.9:3000/api');
+  .constant('SERVER_API', 'http://localhost:3000/api')
+  .constant('SERVER_PHOTO', 'http://localhost:3000/photos');

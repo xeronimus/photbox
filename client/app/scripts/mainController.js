@@ -1,4 +1,4 @@
-function MainController(Photo, Status, Connect, REST_API_URL, $log) {
+function MainController(Photo, Status, Connect, SERVER_PHOTO, SERVER_API, $log) {
 
   var vm = this;
 
@@ -8,7 +8,8 @@ function MainController(Photo, Status, Connect, REST_API_URL, $log) {
   vm.lastPhoto = undefined;
   vm.camStatus = undefined;
   vm.status = 'READY';
-  vm.REST_API_URL = REST_API_URL;
+  vm.SERVER_PHOTO = SERVER_PHOTO;
+  vm.SERVER_API = SERVER_API;
 
   function init() {
     Status.get({}, function (data) {

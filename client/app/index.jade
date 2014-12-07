@@ -22,7 +22,7 @@ body(ng-app='photbox')
           .photo
             .spinner-wrapper(ng-show='main.status === \'WAIT\'')
               .spinner
-            img(ng-if='main.lastPhoto', ng-src='http://192.168.0.9:3000/photos/{{main.lastPhoto.fileName}}')
+            img(ng-if='main.lastPhoto', ng-src='{{main.SERVER_PHOTO}}/{{main.lastPhoto.fileName}}')
       .row.buttons
         .col-xs-12.text-center
           button.btn.btn-primary.btn-lg.btn-take(ng-disabled='!main.canTakePicture()', ng-click='main.takePicture()')
@@ -30,10 +30,10 @@ body(ng-app='photbox')
     .footer
       .row(ng-show='main.status == \'SERVER_OFFLINE\'')
         .col-xs-12
-          | {{main.REST_API_URL}} : SERVER OFFLINE!
+          | {{main.SERVER_API}} : SERVER OFFLINE!
       .row(ng-show='main.status != \'SERVER_OFFLINE\'')
         .col-xs-12
-          | {{main.REST_API_URL}} :
+          | {{main.SERVER_API}} :
           button.btn.btn-xs.btn-default(ng-show='main.camStatus.status !== \'OK\'', ng-click='main.connectCam()')
             | connect
           | Status:
