@@ -1,5 +1,4 @@
-
-angular.module('photbox').controller('MainController', function (Photo, Status, Connect, REST_API_URL,$log) {
+function MainController(Photo, Status, Connect, REST_API_URL, $log) {
 
   var vm = this;
 
@@ -32,9 +31,7 @@ angular.module('photbox').controller('MainController', function (Photo, Status, 
   function handleTakePictureError(err) {
     if (err.status === 0) {
       vm.status = 'SERVER_OFFLINE';
-      return;
     }
-
   }
 
   function takePicture() {
@@ -46,4 +43,6 @@ angular.module('photbox').controller('MainController', function (Photo, Status, 
   }
 
   init();
-});
+}
+
+angular.module('photbox').controller('MainController', MainController);

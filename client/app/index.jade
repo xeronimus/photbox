@@ -1,62 +1,55 @@
 doctype html
 html.no-js
 head
-    meta(charset='utf-8')
-    title
-    meta(name='description', content='')
-    meta(name='viewport', content='width=device-width')
+  meta(charset='utf-8')
+  title
+  meta(name='description', content='')
+  meta(name='viewport', content='width=device-width')
 
-    //  build:css(.) styles/vendor.css
-    //  bower:css
-    //  endbower
-    //  endbuild
-
-    // build:css(.tmp) styles/main.css
-    link(rel='stylesheet', href='styles/cyborg.bootstrap.min.css')
-    link(rel='stylesheet', href='styles/main.css')
-    //  endbuild
+  // build:css
+  link(rel='stylesheet', href='styles/cyborg.bootstrap.min.css')
+  link(rel='stylesheet', href='styles/main.css')
+  //  endbuild
 
 body(ng-app='photbox')
-    .container(ng-controller='MainController as main')
-        .header
-            ul.nav.nav-pills.pull-right
-            h3 photbox
-        div
-            .row
-                .col-xs-12
-                    .photo
-                        .spinner-wrapper(ng-show='main.status === \'WAIT\'')
-                            .spinner
-                        img(ng-if='main.lastPhoto', ng-src='http://192.168.0.9:3000/photos/{{main.lastPhoto.fileName}}')
-            .row.buttons
-                .col-xs-12.text-center
-                    button.btn.btn-primary.btn-lg.btn-take(ng-disabled='!main.canTakePicture()', ng-click='main.takePicture()')
-                        | Click!
-        .footer
-            .row(ng-show='main.status == \'SERVER_OFFLINE\'')
-                .col-xs-12
-                    | {{main.REST_API_URL}} : SERVER OFFLINE!
-            .row(ng-show='main.status != \'SERVER_OFFLINE\'')
-                .col-xs-12
-                    | {{main.REST_API_URL}} :
-                    button.btn.btn-xs.btn-default(ng-show='main.camStatus.status !== \'OK\'', ng-click='main.connectCam()')
-                        | connect
-                    | Status:
-                    i.glyphicon(ng-class='\'camstatus-\' + main.camStatus.status')
-                    | {{main.camStatus.status}}
-                    span(ng-show='main.camStatus.status == \'OK\'') , {{main.camStatus.model}} at {{main.camStatus.port}}
+  .container(ng-controller='MainController as main')
+    .header
+      ul.nav.nav-pills.pull-right
+      h3 photbox
+    div
+      .row
+        .col-xs-12
+          .photo
+            .spinner-wrapper(ng-show='main.status === \'WAIT\'')
+              .spinner
+            img(ng-if='main.lastPhoto', ng-src='http://192.168.0.9:3000/photos/{{main.lastPhoto.fileName}}')
+      .row.buttons
+        .col-xs-12.text-center
+          button.btn.btn-primary.btn-lg.btn-take(ng-disabled='!main.canTakePicture()', ng-click='main.takePicture()')
+            | Click!
+    .footer
+      .row(ng-show='main.status == \'SERVER_OFFLINE\'')
+        .col-xs-12
+          | {{main.REST_API_URL}} : SERVER OFFLINE!
+      .row(ng-show='main.status != \'SERVER_OFFLINE\'')
+        .col-xs-12
+          | {{main.REST_API_URL}} :
+          button.btn.btn-xs.btn-default(ng-show='main.camStatus.status !== \'OK\'', ng-click='main.connectCam()')
+            | connect
+          | Status:
+          i.glyphicon(ng-class='\'camstatus-\' + main.camStatus.status')
+          | {{main.camStatus.status}}
+          span(ng-show='main.camStatus.status == \'OK\'') , {{main.camStatus.model}} at {{main.camStatus.port}}
 
-    //  build:js(.) scripts/vendor.js
-    // bower:js
-    script(src='bower_components/angular/angular.js')
-    script(src='bower_components/angular-resource/angular-resource.js')
-    script(src='bower_components/angular-sanitize/angular-sanitize.js')
-    // endbower
-    // endbuild
+  //  build:vendorjs
+  script(src='bower_components/angular/angular.js')
+  script(src='bower_components/angular-resource/angular-resource.js')
+  script(src='bower_components/angular-sanitize/angular-sanitize.js')
+  // endbuild
 
-    // build:js({.tmp,app}) scripts/scripts.js
-    script(src='scripts/app.js')
-    script(src='scripts/controllers/main.js')
-    script(src='scripts/smartresource.js')
-    script(src='scripts/rest.js')
-    //  endbuild
+  // build:js
+  script(src='scripts/app.js')
+  script(src='scripts/mainController.js')
+  script(src='scripts/smartresource.js')
+  script(src='scripts/rest.js')
+  //  endbuild

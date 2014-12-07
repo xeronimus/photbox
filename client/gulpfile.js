@@ -1,12 +1,22 @@
 var
   gulp = require('gulp'),
+  eslint = require('gulp-eslint'),
+  webserver = require('gulp-webserver'),
   gutil = require('gulp-util'),
-  plugins = require('gulp-load-plugins')({lazy: false});
+  htmlreplace = require('gulp-html-replace'),
+  stylus = require('gulp-stylus'),
+  concat = require('gulp-concat'),
+  jade = require('gulp-jade');
+
+var server = {
+  host: 'localhost',
+  port: '8001',
+  root: './app'
+};
 
 /**
  *   compiles our jade files to html
  * */
-var jade = require('gulp-jade');
 gulp.task('jade', function () {
   var YOUR_LOCALS = {};
 
@@ -21,35 +31,33 @@ gulp.task('jade', function () {
 /**
  *   compiles our stylus files to css
  * */
-var stylus = require('gulp-stylus');
 gulp.task('stylus', function () {
   gulp.src('./app/styles/*.styl')
     .pipe(stylus())
-    .pipe(plugins.concat('main.css'))
+    .pipe(concat('main.css'))
     .pipe(gulp.dest('./app/styles'));
 });
 
 /**
  * Starts the app with browser-sync
  * */
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
 gulp.task('serve', ['jade', 'stylus'], function () {
-  browserSync({
-    server: {
-      baseDir: 'app'
-    }
-  });
+  gulp.src(server.root)
+    .pipe(webserver({
+      host: server.host,
+      port: server.port,
+      open: true,
+      livereload: true,
+      directoryListing: false
+    }));
 
-  gulp.watch(['*.jade', 'scripts/**/*.js'], {cwd: 'app'}, ['jade', reload]);
-  gulp.watch(['styles/**/*.styl'], {cwd: 'app'}, [ 'stylus', reload]);
+  gulp.watch('./app/*.jade', ['jade']);
 });
 
 
 /**
  *  Lints all js files in /app with ESLint
  * */
-var eslint = require('gulp-eslint');
 gulp.task('lint', function () {
   gulp.src(['app/**/*.js', 'test/**/*.js', '!app/bower_components/**/*'])
     .pipe(eslint())
@@ -60,7 +68,7 @@ gulp.task('lint', function () {
 /**
  * Build
  * */
-gulp.task('build', [ 'lint', 'jade', 'assemble', 'html-replace']);
+gulp.task('build', ['lint', 'jade', 'assemble', 'html-replace']);
 
 var del = require('del');
 gulp.task('clean', function (cb) {
@@ -74,7 +82,6 @@ gulp.task('clean', function (cb) {
   });
 });
 
-
 /**
  * assembles all files and copies them to ./dist/
  * */
@@ -82,17 +89,21 @@ gulp.task('assemble', ['clean'], function () {
 
   // concatenates our own js files
   gulp.src(['./app/scripts/module.js', './app/scripts/*.js'])
-    .pipe(plugins.concat('app.js'))
+    .pipe(concat('app.js'))
     .pipe(gulp.dest('./dist'));
 
   // concatenate all 3rd party js files (bower_components)
-  gulp.src(['./app/bower_components/**/dist/**/*.js', './app/bower_components/**/build/*.js', './app/bower_components/angular/angular.js', './app/bower_components/angular-bootstrap/ui-bootstrap.js'])
-    .pipe(plugins.concat('vendor.js'))
+  gulp.src([
+    './app/bower_components/angular/angular.min.js',
+    './app/bower_components/angular-resource/angular-resource.min.js',
+    './app/bower_components/angular-sanitize/angular-sanitize.min.js'
+  ])
+    .pipe(concat('vendor.js'))
     .pipe(gulp.dest('./dist/'));
 
   //  concatenates our own css files
   gulp.src('./app/styles/*.css')
-    .pipe(plugins.concat('app.css'))
+    .pipe(concat('app.css'))
     .pipe(gulp.dest('./dist/styles'));
 
   // copies storage (cheat sheet files) , images
@@ -103,11 +114,9 @@ gulp.task('assemble', ['clean'], function () {
 
 });
 
-
 /**
  *  replace build blocks in index.html
  */
-var htmlreplace = require('gulp-html-replace');
 gulp.task('html-replace', ['clean', 'assemble'], function () {
   gulp.src('./app/index.html')
     .pipe(htmlreplace({
@@ -117,7 +126,6 @@ gulp.task('html-replace', ['clean', 'assemble'], function () {
     }))
     .pipe(gulp.dest('dist/'));
 });
-
 
 /**
  *  The default task
