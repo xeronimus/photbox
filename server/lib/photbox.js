@@ -1,4 +1,4 @@
-var gphoto2 = require('gphoto2'),
+var
   winston = require('winston'),
   Q = require('q'),
   _ = require('lodash'),
@@ -7,10 +7,24 @@ var gphoto2 = require('gphoto2'),
 
 var LOGGER = new (winston.Logger)({
   transports: [
-    new (winston.transports.Console)({ level: settings.logging.level})  ]
+    new (winston.transports.Console)({level: settings.logging.level})]
 });
-var GPhoto = new gphoto2.GPhoto2();
+
+
+var GPhoto = getGPhotoInstance();
 var cam;
+
+
+function getGPhotoInstance() {
+  var gPhotoLib;
+  if (settings.useMockGphoto) {
+    gPhotoLib = require('./mock/mockGphoto2');
+    LOGGER.info('Using mock GPhoto2 instance! Configure "useMockGphoto" in settings.js!')
+  } else {
+    gPhotoLib = new require('gphoto2');
+  }
+  return new gPhotoLib.GPhoto2();
+}
 
 /**
  *  lists all available cams and picks the first one.
@@ -21,12 +35,12 @@ function connectCam() {
   GPhoto.list(function (list) {
     if (list.length === 0) {
       LOGGER.error('No camera found...');
-      deferred.reject();
-      return;
+      deferred.reject('No camera found...');
+    } else {
+      cam = list[0];
+      LOGGER.info('Found %s at port %s', cam.model, cam.port);
+      deferred.resolve({status: 'OK', model: cam.model, port: cam.port, allCams: list});
     }
-    cam = list[0];
-    LOGGER.info('Found %s at port %s', cam.model, cam.port);
-    deferred.resolve({status: 'OK', model: cam.model, port: cam.port, allCams: list});
   });
   return deferred.promise;
 }

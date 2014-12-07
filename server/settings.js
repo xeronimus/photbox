@@ -4,5 +4,6 @@ module.exports = {
   "logging": {
     "level": "debug"
   },
-  "storage": path.join(__dirname, "./photos")
+  "storage": path.join(__dirname, "./photos"),
+  "useMockGphoto": true
 };

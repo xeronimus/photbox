@@ -49,7 +49,7 @@ app.get('/api/connect', function (req, res) {
   photbox.connectCam().then(function (result) {
     responseHandler.success(result, res);
   }, function (err) {
-    responseHandler.error(err, res);
+    responseHandler.error(err, res, 503);
   });
 });
 

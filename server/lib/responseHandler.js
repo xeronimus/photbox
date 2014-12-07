@@ -13,25 +13,17 @@ function respond(response, body) {
 }
 
 var responseHandler = {
-  success: function (payload, response, options) {
-    respond(response, payload, options);
+  success: function (payload, response) {
+    respond(response, payload);
   },
 
-  error: function (error, response, options) {
-    if (!_.isUndefined(options) && !_.isUndefined(options.statusCode)) {
-      response.statusCode = options.statusCode;
+  error: function (error, response, statusCode) {
+    if (!_.isUndefined(statusCode)) {
+      response.statusCode = statusCode;
     } else {
       response.statusCode = 400;
     }
-    respond(response, error, options);
-  },
-
-  notFound: function (response) {
-    this.error('Not found', response, { statusCode: 404 });
-  },
-
-  notAuthorized: function (response) {
-    this.error('Not authorized', response, { statusCode: 401 });
+    respond(response, error);
   },
 
   send: function (error, payload, res, options) {
