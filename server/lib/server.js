@@ -1,9 +1,14 @@
-var express = require('express'),
+'use strict';
+
+var
+  express = require('express'),
   photbox = require('./photbox'),
   photoStorage = require('./photoStorage'),
   path = require('path'),
   responseHandler = require('./responseHandler'),
-  settings = require('../settings');
+  settings = require('../settings'),
+  socketServer = require('./socketServer');
+
 var app = express();
 
 
@@ -29,7 +34,10 @@ app.all('*', function (req, res, next) {
   next();
 });
 
-
+/**
+ * triggers the cam to take a photo, saves it and returns the name
+ * of the new photo
+ */
 app.get('/api/photo', function (req, res) {
 
   function sendError(err) {
@@ -40,11 +48,28 @@ app.get('/api/photo', function (req, res) {
     .then(function (pictureData) {
       photoStorage.storePicture(pictureData)
         .then(function (result) {
+          socketServer.broadcastNewImage(result);
           responseHandler.success(result, res);
         }, sendError);
     }, sendError);
 });
 
+/**
+ * returns a list of all saved photos
+ */
+app.get('/api/list', function (req, res) {
+  photoStorage.listStoredPictures()
+    .then(function (result) {
+      responseHandler.success(result, res);
+    }, function (err) {
+      responseHandler.error(err, res);
+    })
+});
+
+/**
+ * connects the cam.
+ * this is used if the server was started, before the cam was connected to the USB port.
+ */
 app.get('/api/connect', function (req, res) {
   photbox.connectCam().then(function (result) {
     responseHandler.success(result, res);
@@ -53,6 +78,9 @@ app.get('/api/connect', function (req, res) {
   });
 });
 
+/**
+ * returns status information about the connected cam, if any.
+ */
 app.get('/api/status', function (req, res) {
   photbox.status().then(function (result) {
     responseHandler.success(result, res);
@@ -62,8 +90,10 @@ app.get('/api/status', function (req, res) {
 });
 
 function startServer() {
+  var httpServer = socketServer.start(app);
+
   var port = 3000;
-  app.listen(port, function () {
+  httpServer.listen(port, function () {
     console.log('express server started at port ' + port + '...');
   });
 }

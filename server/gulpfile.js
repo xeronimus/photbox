@@ -1,7 +1,7 @@
 var
   gulp = require('gulp'),
-  mocha = require('gulp-mocha');
-
+  mocha = require('gulp-mocha'),
+  eslint = require('gulp-eslint');
 
 var paths = {
   jsFiles: ['lib/**/*.js', 'index.js', 'gulpfile.js'],
@@ -10,7 +10,6 @@ var paths = {
 /**
  *  Lints all js files with ESLint
  * */
-var eslint = require('gulp-eslint');
 gulp.task('lint', function () {
   gulp.src(paths.jsFiles)
     .pipe(eslint())
@@ -24,7 +23,7 @@ gulp.task('test', function () {
 });
 
 
-gulp.task('dev', ['lint','test'], function () {
+gulp.task('dev', ['lint', 'test'], function () {
   gulp.watch(paths.jsFiles, ['lint', 'test']);
   gulp.watch(paths.jsTestFiles, ['lint', 'test']);
 });

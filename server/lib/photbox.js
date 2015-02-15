@@ -21,7 +21,8 @@ function getGPhotoInstance() {
     gPhotoLib = require('./mock/mockGphoto2');
     LOGGER.info('Using mock GPhoto2 instance! Configure "useMockGphoto" in settings.js!')
   } else {
-    gPhotoLib = new require('gphoto2');
+    var GPhoto2 = require('gphoto2');
+    gPhotoLib = new GPhoto2();
   }
   return new gPhotoLib.GPhoto2();
 }

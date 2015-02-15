@@ -9,7 +9,7 @@ var
 
 var LOGGER = new (winston.Logger)({
   transports: [
-    new (winston.transports.Console)({ level: settings.logging.level})  ]
+    new (winston.transports.Console)({level: settings.logging.level})]
 });
 
 var imageStoreLocation = path.resolve(settings.storage);
@@ -36,6 +36,19 @@ function storePicture(data) {
   return deferred.promise;
 }
 
+function listStoredPictures() {
+  var deferred = Q.defer();
+  fs.readdir(imageStoreLocation, function (err, files) {
+    if (err) {
+      deferred.reject(err);
+    } else {
+      deferred.resolve(files);
+    }
+  });
+  return deferred.promise;
+}
+
 module.exports = {
-  storePicture: storePicture
+  storePicture: storePicture,
+  listStoredPictures: listStoredPictures
 };
