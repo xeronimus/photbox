@@ -1,4 +1,6 @@
-function MainController(Photo, Status, Connect, SERVER_PHOTO, SERVER_API, $log) {
+'use strict';
+
+function MainController(Photo, Status, Connect, SERVER, $log) {
 
   var vm = this;
 
@@ -8,8 +10,8 @@ function MainController(Photo, Status, Connect, SERVER_PHOTO, SERVER_API, $log) 
   vm.lastPhoto = undefined;
   vm.camStatus = undefined;
   vm.status = 'READY';
-  vm.SERVER_PHOTO = SERVER_PHOTO;
-  vm.SERVER_API = SERVER_API;
+  vm.SERVER_PHOTO = SERVER + 'photos';
+  vm.SERVER_API = SERVER + 'api';
 
   function init() {
     Status.get({}, function (data) {

@@ -1,55 +1,33 @@
 doctype html
 html.no-js
 head
-  meta(charset='utf-8')
+  meta(charset="utf-8")
   title
-  meta(name='description', content='')
-  meta(name='viewport', content='width=device-width')
+  meta(name="description" content="")
+  meta(name="viewport" content="width=device-width")
 
   // build:css
-  link(rel='stylesheet', href='styles/cyborg.bootstrap.min.css')
-  link(rel='stylesheet', href='styles/main.css')
+  link(rel="stylesheet" href="styles/cyborg.bootstrap.min.css")
+  link(rel="stylesheet" href="styles/main.css")
   //  endbuild
 
-body(ng-app='photbox')
-  .container(ng-controller='MainController as main')
-    .header
-      ul.nav.nav-pills.pull-right
-      h3 photbox
-    div
-      .row
-        .col-xs-12
-          .photo
-            .spinner-wrapper(ng-show='main.status === \'WAIT\'')
-              .spinner
-            img(ng-if='main.lastPhoto', ng-src='{{main.SERVER_PHOTO}}/{{main.lastPhoto.fileName}}')
-      .row.buttons
-        .col-xs-12.text-center
-          button.btn.btn-primary.btn-lg.btn-take(ng-disabled='!main.canTakePicture()', ng-click='main.takePicture()')
-            | Click!
-    .footer
-      .row(ng-show='main.status == \'SERVER_OFFLINE\'')
-        .col-xs-12
-          | {{main.SERVER_API}} : SERVER OFFLINE!
-      .row(ng-show='main.status != \'SERVER_OFFLINE\'')
-        .col-xs-12
-          | {{main.SERVER_API}} :
-          button.btn.btn-xs.btn-default(ng-show='main.camStatus.status !== \'OK\'', ng-click='main.connectCam()')
-            | connect
-          | Status:
-          i.glyphicon(ng-class='\'camstatus-\' + main.camStatus.status')
-          | {{main.camStatus.status}}
-          span(ng-show='main.camStatus.status == \'OK\'') , {{main.camStatus.model}} at {{main.camStatus.port}}
-
-  //  build:vendorjs
-  script(src='bower_components/angular/angular.js')
-  script(src='bower_components/angular-resource/angular-resource.js')
-  script(src='bower_components/angular-sanitize/angular-sanitize.js')
+  // build:vendorjs
+  script(src="bower_components/angular/angular.js")
+  script(src="bower_components/angular-resource/angular-resource.js")
+  script(src="bower_components/angular-sanitize/angular-sanitize.js")
+  script(src="bower_components/angular-ui-router/release/angular-ui-router.js")
   // endbuild
 
+body(ng-app="photbox")
+  div(ui-view)
+
   // build:js
-  script(src='scripts/app.js')
-  script(src='scripts/mainController.js')
-  script(src='scripts/smartresource.js')
-  script(src='scripts/rest.js')
+  script(src="http://localhost:3000/socket.io/socket.io.js")
+  script(src="scripts/app.js")
+  script(src="scripts/showService.js")
+  script(src="scripts/showController.js")
+  script(src="scripts/mainController.js")
+  script(src="scripts/smartresource.js")
+  script(src="scripts/pbFader.js")
+  script(src="scripts/rest.js")
   //  endbuild

@@ -1,0 +1,29 @@
+.container
+  .header
+    h3 photbox
+  div
+    .row
+      .col-xs-12
+        .photo
+          .spinner-wrapper(ng-show="main.status === 'WAIT'")
+            .spinner
+          img(ng-if="main.lastPhoto" ng-src="{{main.SERVER_PHOTO}}/{{main.lastPhoto.fileName}}")
+    .row.buttons
+      .col-xs-12.text-center
+        button.btn.btn-primary.btn-lg.btn-take(ng-disabled='!main.canTakePicture()' ng-click='main.takePicture()')
+          | Click!
+  .footer
+    .row(ng-show="main.status == 'SERVER_OFFLINE'")
+      .col-xs-12
+        | {{main.SERVER_API}} : SERVER OFFLINE!
+    .row(ng-show="main.status != 'SERVER_OFFLINE'")
+      .col-xs-12
+        span.divider
+          | {{main.SERVER_API}} : Online
+          button.btn.btn-xs.btn-default(ng-show="main.camStatus.status !== 'OK'"  ng-click="main.connectCam()")
+            | connect
+        span.divider
+          | Status: {{main.camStatus.status}}
+          span(ng-show="main.camStatus.status == 'OK'")
+        span.divider
+          | {{main.camStatus.model}} at {{main.camStatus.port}}

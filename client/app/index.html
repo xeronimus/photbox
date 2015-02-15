@@ -9,49 +9,23 @@
   <link rel="stylesheet" href="styles/cyborg.bootstrap.min.css">
   <link rel="stylesheet" href="styles/main.css">
   <!--  endbuild-->
-</head>
-<body ng-app="photbox">
-  <div ng-controller="MainController as main" class="container">
-    <div class="header">
-      <ul class="nav nav-pills pull-right"></ul>
-      <h3>photbox</h3>
-    </div>
-    <div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="photo">
-            <div ng-show="main.status === 'WAIT'" class="spinner-wrapper">
-              <div class="spinner"></div>
-            </div><img ng-if="main.lastPhoto" ng-src="{{main.SERVER_PHOTO}}/{{main.lastPhoto.fileName}}">
-          </div>
-        </div>
-      </div>
-      <div class="row buttons">
-        <div class="col-xs-12 text-center">
-          <button ng-disabled="!main.canTakePicture()" ng-click="main.takePicture()" class="btn btn-primary btn-lg btn-take">Click!</button>
-        </div>
-      </div>
-    </div>
-    <div class="footer">
-      <div ng-show="main.status == 'SERVER_OFFLINE'" class="row">
-        <div class="col-xs-12">{{main.SERVER_API}} : SERVER OFFLINE!</div>
-      </div>
-      <div ng-show="main.status != 'SERVER_OFFLINE'" class="row">
-        <div class="col-xs-12">{{main.SERVER_API}} :
-          <button ng-show="main.camStatus.status !== 'OK'" ng-click="main.connectCam()" class="btn btn-xs btn-default">connect</button>Status:<i ng-class="'camstatus-' + main.camStatus.status" class="glyphicon"></i>{{main.camStatus.status}}<span ng-show="main.camStatus.status == 'OK'">, {{main.camStatus.model}} at {{main.camStatus.port}}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--  build:vendorjs-->
+  <!-- build:vendorjs-->
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-resource/angular-resource.js"></script>
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <!-- endbuild-->
+</head>
+<body ng-app="photbox">
+  <div ui-view></div>
   <!-- build:js-->
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script src="scripts/app.js"></script>
+  <script src="scripts/showService.js"></script>
+  <script src="scripts/showController.js"></script>
   <script src="scripts/mainController.js"></script>
   <script src="scripts/smartresource.js"></script>
+  <script src="scripts/pbFader.js"></script>
   <script src="scripts/rest.js"></script>
   <!--  endbuild-->
 </body>

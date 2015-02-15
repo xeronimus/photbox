@@ -6,7 +6,8 @@ var
   htmlreplace = require('gulp-html-replace'),
   stylus = require('gulp-stylus'),
   concat = require('gulp-concat'),
-  jade = require('gulp-jade');
+  jade = require('gulp-jade'),
+  exec = require('child_process').exec;
 
 var server = {
   host: 'localhost',
@@ -20,7 +21,7 @@ var server = {
 gulp.task('jade', function () {
   var YOUR_LOCALS = {};
 
-  gulp.src('./app/*.jade')
+  gulp.src('./app/**/*.jade')
     .pipe(jade({
       pretty: true,
       locals: YOUR_LOCALS
@@ -51,7 +52,8 @@ gulp.task('serve', ['jade', 'stylus'], function () {
       directoryListing: false
     }));
 
-  gulp.watch('./app/*.jade', ['jade']);
+  gulp.watch('./app/**/*.jade', ['jade']);
+  gulp.watch('./app/styles/*.styl', ['stylus']);
 });
 
 
@@ -106,9 +108,9 @@ gulp.task('assemble', ['clean'], function () {
     .pipe(concat('app.css'))
     .pipe(gulp.dest('./dist/styles'));
 
-  // copies storage (cheat sheet files) , images
-  gulp.src('./app/storage/*.json')
-    .pipe(gulp.dest('./dist/storage'));
+  // copies resources
+  gulp.src('./app/fonts/**')
+    .pipe(gulp.dest('./dist/fonts'));
   gulp.src('./app/images/*')
     .pipe(gulp.dest('./dist/images'));
 
@@ -128,9 +130,22 @@ gulp.task('html-replace', ['clean', 'assemble'], function () {
 });
 
 /**
+ * copies client dist to remote host
+ */
+gulp.task('deploy', function (done) {
+  var deployHost = '192.168.0.9';
+  var deployUser = 'pi';
+  var deployPath = '~/git/photbox/client';
+  exec('rsync -P -r dist/ ' + deployUser + '@' + deployHost + ':' + deployPath, function (err, stdout) {
+    console.log(stdout);
+    done(err);
+  });
+
+});
+
+/**
  *  The default task
  * */
-gulp.task('default', ['build'], function () {
-});
+gulp.task('default', ['build']);
 
 
