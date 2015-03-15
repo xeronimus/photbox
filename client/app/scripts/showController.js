@@ -2,7 +2,7 @@
 
 function ShowController(ShowService, SERVER, $interval) {
 
-  var INTERVALL_MS = 14000;
+  var INTERVALL_MS = 8000;
   var interval;
 
   var vm = this;
