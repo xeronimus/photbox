@@ -21,8 +21,7 @@ function getGPhotoInstance() {
     gPhotoLib = require('./mock/mockGphoto2');
     LOGGER.info('Using mock GPhoto2 instance! Configure "useMockGphoto" in settings.js!')
   } else {
-    var GPhoto2 = require('gphoto2');
-    gPhotoLib = new GPhoto2();
+    gPhotoLib = require('gphoto2');
   }
   return new gPhotoLib.GPhoto2();
 }
@@ -45,7 +44,6 @@ function connectCam() {
   });
   return deferred.promise;
 }
-
 
 function take() {
   var deferred = Q.defer();
