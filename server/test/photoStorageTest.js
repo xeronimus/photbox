@@ -1,6 +1,6 @@
-var
-  expect = require('expect.js'),
-  photoStorage = require('../lib/photoStorage');
+'use strict';
+
+var photoStorage = require('../lib/photoStorage');
 
 describe('photoStorage', function () {
 
@@ -8,7 +8,7 @@ describe('photoStorage', function () {
 
     it('should store picture', function (done) {
       photoStorage.storePicture('testSergio')
-        .then(function (a) {
+        .then(function () {
           done();
         }, function (err) {
           console.log(err);

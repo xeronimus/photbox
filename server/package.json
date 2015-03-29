@@ -1,8 +1,12 @@
 {
-  "name": "photbox",
+  "name": "photbox-server",
   "version": "0.0.0",
-  "description": "",
+  "description": "Photo-Booth for your Party - driven by raspberry pi",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xeronimus/photbox"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "4.9.4",
-    "gphoto2": "0.1.6",
+    "gphoto2": "0.1.7",
     "lodash": "~2.4.1",
     "moment": "~2.8.3",
     "q": "1.0.1",
@@ -18,10 +22,8 @@
     "winston": "~0.8.0"
   },
   "devDependencies": {
-    "gulp": "~3.8.8",
-    "gulp-eslint": "~0.1.8",
-    "mocha": "~1.21.4",
-    "expect.js": "~0.3.1",
-    "gulp-mocha": "~1.1.0"
+    "gulp": "^3.8.11",
+    "gulp-eslint": "^0.7.0",
+    "gulp-mocha": "^2.0.0"
   }
 }
